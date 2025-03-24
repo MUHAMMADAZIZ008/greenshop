@@ -1,7 +1,7 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -11,8 +11,9 @@ const Banner = () => {
     <div className="container pt-[18px] pb-[40px]">
       <Swiper
         loop={true}
-        pagination={true}
-        modules={[Pagination]}
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        modules={[Autoplay, Pagination]}
         className="banner__swiper"
       >
         <SwiperSlide>

@@ -6,7 +6,7 @@ import bannerImg1 from '@/assets/png/banner_img1.png'
 
 const BannerContent = () => {
   return (
-    <div className="flex items-center justify-between pt-[40px] px-[40px] bg-gradient-to-br from-[rgba(245,245,245,0.5)] to-[rgba(245,245,245,0.5)]">
+    <div className="flex items-center justify-between px-[40px] bg-gradient-to-br from-[rgba(245,245,245,0.5)] to-[rgba(245,245,245,0.5)]">
       <div className="">
         <p className="font-medium text-[14px]/[114%] uppercase">
           Welcome to GreenShop

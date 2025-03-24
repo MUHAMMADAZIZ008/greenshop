@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "next": "15.2.3",
+    "p-limit": "^6.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "swiper": "^11.2.6"
