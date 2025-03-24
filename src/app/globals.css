@@ -1,26 +1,47 @@
 @import "tailwindcss";
 
+
+@font-face {
+    font-family: "Cera Pro";
+    src: url("../assets/fonts/Demo_Fonts/Fontspring-DEMO-cerapro-regular.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+/* @font-face {
+  font-family: "Cera Pro";
+  src: url("../assets/fonts/Demo_Fonts/Fontspring-DEMO-cerapro-regular.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+} */
+  
+
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    font-family: "Cera Pro";
+}
+
+
+
+.container {
+    max-width: 1240px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: 0 auto;
+}
+
+.banner__swiper .swiper-pagination-bullet-active{
+  background-color: #46a358;
+}
+
+
+button {
+  cursor: pointer;
 }
