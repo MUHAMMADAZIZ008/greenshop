@@ -1,11 +1,17 @@
 "use client";
 import { CategoryResponse } from "@/common/interface";
+import Button from "@/components/ui/button";
 import fetchWrapper from "@/service/fetcher";
 import React, { useState, useEffect } from "react";
 
 const CategorySelection = () => {
+  const [minPrice, setMinPrice] = useState(39);
+  const [maxPrice, setMaxPrice] = useState(1230);
+
   const [categories, setCategories] = useState<CategoryResponse["data"]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const [size, setSize] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -33,9 +39,9 @@ const CategorySelection = () => {
   };
 
   return (
-    <div className="bg-[#fbfbfb] p-4">
-      <h2 className="text-[#3d3d3d] text-[18px] mb-2">Categories</h2>
-      <ul>
+    <div className="bg-[#fbfbfb] py-4 pl-4.5 pr-6">
+      <h2 className="text-[#3d3d3d] text-[18px] mb-2 font-bold">Categories</h2>
+      <ul className="mb-[36px]">
         {categories.map((item) => (
           <li
             key={item._id}
@@ -48,6 +54,92 @@ const CategorySelection = () => {
           </li>
         ))}
       </ul>
+      <div className="mb-[46px]">
+        <h2 className="text-lg font-bold">Price Range</h2>
+
+        <div className="relative mt-4">
+          {/* Range Slider */}
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            value={minPrice}
+            onChange={(e) => setMinPrice(Number(e.target.value))}
+            className="absolute w-[50%] left-0 h-2 bg-gray-300 rounded-l-lg appearance-none cursor-pointer"
+            style={{ zIndex: 2 }}
+          />
+          <input
+            type="range"
+            min="1000"
+            max="2000"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(Number(e.target.value))}
+            className="absolute w-[50%] right-0 h-2 bg-gray-300 rounded-r-lg appearance-none cursor-pointer"
+            style={{ zIndex: 2 }}
+          />
+
+          {/* Progress Bar */}
+          <div
+            className="absolute h-2 bg-green-500 rounded-lg"
+            style={{
+              left: `${(minPrice / 2000) * 100}%`,
+              right: `${100 - (maxPrice / 2000) * 100}%`,
+            }}
+          />
+        </div>
+
+        {/* Price Value */}
+        <p className="mt-10 text-lg font-semibold">
+          Price: <span className="text-green-600">${minPrice}</span> –{" "}
+          <span className="text-green-600">${maxPrice}</span>
+        </p>
+
+        {/* Filter Button */}
+        <Button variant="primary" classes="px-[25px]">
+          Filter
+        </Button>
+      </div>
+      <div className="">
+        <h2 className="text-[#3d3d3d] text-[18px] mb-2 font-bold">Size</h2>
+        <ul className="pl-[12px] flex flex-col gap-4">
+          <li>
+            <button
+              className={`${
+                size !== "small"
+                  ? "text-[#3d3d3d] text-[15px]"
+                  : "font-bold text-[#46a358]"
+              }`}
+              onClick={() => setSize("small")}
+            >
+              Small
+            </button>
+          </li>
+          <li>
+            <button
+              className={`${
+                size !== "medium"
+                  ? "text-[#3d3d3d] text-[15px]"
+                  : "font-bold text-[#46a358]"
+              }`}
+              onClick={() => setSize("medium")}
+            >
+              Medium
+            </button>
+          </li>
+          <li>
+            <button
+              className={`${
+                size !== "large"
+                  ? "text-[#3d3d3d] text-[15px]"
+                  : "font-bold text-[#46a358]"
+              }`}
+              onClick={() => setSize("large")}
+            >
+              Large
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
