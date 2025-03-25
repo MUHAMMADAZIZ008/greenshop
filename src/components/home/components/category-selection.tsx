@@ -1,17 +1,24 @@
 "use client";
-import { CategoryResponse } from "@/common/interface";
+import { CategoryResponse, FilterT } from "@/common/interface";
 import Button from "@/components/ui/button";
 import fetchWrapper from "@/service/fetcher";
 import React, { useState, useEffect } from "react";
 
-const CategorySelection = () => {
+const CategorySelection = ({
+  setFilter,
+}: {
+  setFilter: (obj: FilterT) => void;
+}) => {
   const [minPrice, setMinPrice] = useState(39);
   const [maxPrice, setMaxPrice] = useState(1230);
 
   const [categories, setCategories] = useState<CategoryResponse["data"]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<{
+    title: string;
+    id: string;
+  }>();
 
-  const [size, setSize] = useState<string | null>(null);
+  const [size, setSize] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -29,26 +36,37 @@ const CategorySelection = () => {
   useEffect(() => {
     const savedCategory = localStorage.getItem("selectedCategory");
     if (savedCategory) {
-      setSelectedCategory(savedCategory);
+      setSelectedCategory(JSON.parse(savedCategory));
     }
   }, []);
 
-  const handleSelect = (category: string) => {
-    setSelectedCategory(category);
+  useEffect(() => {
+    setFilter({
+      category: selectedCategory?.id,
+      maxPrice: maxPrice,
+      minPrice: minPrice,
+      size: size,
+    });
+  }, [minPrice, maxPrice, selectedCategory, size]);
+
+  const handleSelect = (category: string, id: string) => {
+    setSelectedCategory({ title: category, id });
     localStorage.setItem("selectedCategory", category);
   };
 
   return (
-    <div className="bg-[#fbfbfb] py-4 pl-4.5 pr-6">
+    <div className="bg-[#fbfbfb] py-4 pl-4.5 pr-6 w-[310px]">
       <h2 className="text-[#3d3d3d] text-[18px] mb-2 font-bold">Categories</h2>
       <ul className="mb-[36px]">
         {categories.map((item) => (
           <li
             key={item._id}
             className={`cursor-pointer p-2 ${
-              selectedCategory === item.name ? "text-green-600 font-bold" : ""
+              selectedCategory?.title === item.name
+                ? "text-green-600 font-bold"
+                : ""
             }`}
-            onClick={() => handleSelect(item.name)}
+            onClick={() => handleSelect(item.name, item._id)}
           >
             {item.name.replace(/^\w/, (c) => c.toUpperCase())}
           </li>

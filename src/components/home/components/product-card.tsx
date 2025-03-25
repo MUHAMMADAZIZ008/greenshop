@@ -34,7 +34,7 @@ const ProductCard = ({
       <div className="mb-3 group relative bg-[#fbfbfb]">
         <div className="absolute top-0 w-full bg-[#46a358] h-0.5 opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
         <Image src={img} alt="card image" width={250} height={250} />
-        <div className="absolute w-full flex items-center justify-center gap-6 bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-200">
+        <div className="absolute w-full flex items-center justify-center gap-6 bottom-0 opacity-0 group-hover:bottom-2 group-hover:opacity-100 transition-all duration-200">
           <button className="w-[40px] h-[40px] rounded-[4px] bg-white flex items-center justify-center hover:text-[#46a358]">
             <CartIcon />
           </button>
