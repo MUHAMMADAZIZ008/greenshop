@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 
 export const getProductByFetch = async ({ filter }: { filter?: FilterT }) => {
   const data = await fetchWrapper<ProductResponse>(
-    `/products?categoryId=67dd38572c0640fc1a0ef93f&page=${filter?.page}&limit=${filter?.limit}`
+    `/products?categoryId=${filter?.category}&page=${filter?.page}&limit=${filter?.limit}&maxPrice=${filter?.maxPrice}&minPrice=${filter?.minPrice}`
   );
+
   return data;
 };
 

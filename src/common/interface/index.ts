@@ -24,6 +24,7 @@ export interface ProductT {
   discount_price: number;
   quantity: number;
   images: string[];
+  size: string[];
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -35,6 +36,11 @@ export interface ProductResponse {
   status: number;
   totalCount: number;
 }
+export interface oneProductResponse {
+  data: ProductT;
+  message: string;
+  status: number;
+}
 
 export interface FilterT {
   page?: number;
@@ -43,4 +49,8 @@ export interface FilterT {
   maxPrice?: number;
   minPrice?: number;
   size?: string;
+}
+
+export interface PageProps {
+  searchParams: { id?: string };
 }

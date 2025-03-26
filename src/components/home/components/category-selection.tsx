@@ -6,11 +6,13 @@ import React, { useState, useEffect } from "react";
 
 const CategorySelection = ({
   setFilter,
+  filter,
 }: {
   setFilter: (obj: FilterT) => void;
+  filter: FilterT;
 }) => {
-  const [minPrice, setMinPrice] = useState(39);
-  const [maxPrice, setMaxPrice] = useState(1230);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(43823312);
 
   const [categories, setCategories] = useState<CategoryResponse["data"]>([]);
   const [selectedCategory, setSelectedCategory] = useState<{
@@ -35,23 +37,33 @@ const CategorySelection = ({
 
   useEffect(() => {
     const savedCategory = localStorage.getItem("selectedCategory");
+
     if (savedCategory) {
       setSelectedCategory(JSON.parse(savedCategory));
+    } else {
+      setSelectedCategory({
+        title: categories[0]?.name,
+        id: categories[0]?._id,
+      });
     }
-  }, []);
+  }, [categories]);
 
   useEffect(() => {
     setFilter({
+      ...filter,
+      maxPrice,
+      minPrice,
       category: selectedCategory?.id,
-      maxPrice: maxPrice,
-      minPrice: minPrice,
-      size: size,
+      size,
     });
-  }, [minPrice, maxPrice, selectedCategory, size]);
+  }, [minPrice, maxPrice, selectedCategory, size, setFilter]);
 
   const handleSelect = (category: string, id: string) => {
     setSelectedCategory({ title: category, id });
-    localStorage.setItem("selectedCategory", category);
+    localStorage.setItem(
+      "selectedCategory",
+      JSON.stringify({ title: category, id })
+    );
   };
 
   return (
@@ -75,39 +87,38 @@ const CategorySelection = ({
       <div className="mb-[46px]">
         <h2 className="text-lg font-bold">Price Range</h2>
 
-        <div className="relative mt-4">
+        <div className="mt-6 flex items-center justify-between">
           {/* Range Slider */}
           <input
-            type="range"
+            type="text"
             min="0"
             max="1000"
             value={minPrice}
             onChange={(e) => setMinPrice(Number(e.target.value))}
-            className="absolute w-[50%] left-0 h-2 bg-gray-300 rounded-l-lg appearance-none cursor-pointer"
+            className="py-3 w-[100px] right-0 pl-2 bg-gray-300 rounded-lg"
             style={{ zIndex: 2 }}
           />
           <input
-            type="range"
+            type="text"
             min="1000"
             max="2000"
             value={maxPrice}
             onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="absolute w-[50%] right-0 h-2 bg-gray-300 rounded-r-lg appearance-none cursor-pointer"
+            className="py-3 w-[100px] right-0 pl-2 bg-gray-300 rounded-lg"
             style={{ zIndex: 2 }}
           />
 
           {/* Progress Bar */}
-          <div
+          {/* <div
             className="absolute h-2 bg-green-500 rounded-lg"
             style={{
               left: `${(minPrice / 2000) * 100}%`,
               right: `${100 - (maxPrice / 2000) * 100}%`,
             }}
-          />
+          /> */}
         </div>
-
         {/* Price Value */}
-        <p className="mt-10 text-lg font-semibold">
+        <p className="mt-4 text-lg font-semibold">
           Price: <span className="text-green-600">${minPrice}</span> –{" "}
           <span className="text-green-600">${maxPrice}</span>
         </p>

@@ -53,9 +53,7 @@ const fetchWrapper: FetchWrapper = async <T>(
     });
 
     if (!response.ok) {
-      console.log(response);
 
-      console.log(response);
 
       const errorData: ErrorData = await response?.json();
 

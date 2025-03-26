@@ -3,6 +3,7 @@ import CartIcon from "@/assets/components/cart-icon";
 import LikeIcon from "@/assets/components/like-icon";
 import SearchIcon from "@/assets/components/search-icon";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const ProductDiscountBox = ({ discount }: { discount: number }) => {
@@ -21,12 +22,16 @@ const ProductCard = ({
   discount,
   discount_price,
   img,
+  id,
+  category_id,
 }: {
   name: string;
   price: number;
   discount?: number;
   discount_price?: number;
   img: string;
+  category_id: string;
+  id: string;
 }) => {
   return (
     <div className="relative">
@@ -46,17 +51,23 @@ const ProductCard = ({
           </button>
         </div>
       </div>
-      <h3 className="text-[#3d3d3d]">{name}</h3>
-      {discount ? (
-        <div className="flex items-center gap-[17px]">
-          <p className="font-bold text-[#46a358]">
-            ${discount_price?.toFixed(2)}
-          </p>{" "}
-          <p className="text-[#a5a5a5] line-through text-[18px]">${price}</p>
+      <Link href={`/product-detail/${id}/${category_id}`}>
+        <div>
+          <h3 className="text-[#3d3d3d]">{name}</h3>
+          {discount ? (
+            <div className="flex items-center gap-[17px]">
+              <p className="font-bold text-[#46a358]">
+                ${discount_price?.toFixed(2)}
+              </p>{" "}
+              <p className="text-[#a5a5a5] line-through text-[18px]">
+                ${price}
+              </p>
+            </div>
+          ) : (
+            <p className="font-bold text-[#46a358] text-[18px]">${price}</p>
+          )}
         </div>
-      ) : (
-        <p className="font-bold text-[#46a358] text-[18px]">${price}</p>
-      )}
+      </Link>
     </div>
   );
 };

@@ -8,10 +8,15 @@ import NextIcon from "@/assets/components/next-icon";
 import { FilterT } from "@/common/interface";
 
 const Categories = () => {
-  const [filter, setFilter] = useState<FilterT>();
+  const [filter, setFilter] = useState<FilterT>({
+    page: 1,
+    limit: 9
+  });
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, error } = useGetProductByQuery(filter);
+
+  
 
   useEffect(() => {
     if (data?.totalCount) {
@@ -27,7 +32,7 @@ const Categories = () => {
   return (
     <section className="pt-[40px] pb-[94px]">
       <div className="container flex items-start gap-[50px]">
-        <CategorySelection setFilter={setFilter} />
+        <CategorySelection setFilter={setFilter} filter={filter}/>
         <div>
           <CategoryStatus />
           <div className="grid grid-cols-3 gap-[40px] mb-[90px]">
@@ -37,6 +42,8 @@ const Categories = () => {
               data?.data?.map((item) => (
                 <ProductCard
                   key={item._id}
+                  id={item._id}
+                  category_id={item.category._id}
                   img={item.images[0]}
                   name={item.name}
                   price={item.price}

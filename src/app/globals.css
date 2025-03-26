@@ -1,14 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
+/* @font-face {
     font-family: "Cera Pro";
     src: url("../assets/fonts/Demo_Fonts/Fontspring-DEMO-cerapro-regular.otf") format("opentype");
     font-weight: normal;
     font-style: normal;
-  }
+  } */
 
 /* @font-face {
   font-family: "Cera Pro";
@@ -56,7 +57,8 @@
 }
 
 body {
-    font-family: "Cera Pro";
+  font-family: "Lato", sans-serif;
+    /* font-family: "Cera Pro"; */
 }
 
 .container {
