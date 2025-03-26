@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/header/header";
 import Footer from "@/components/footer/footer";
 import QueryClientProviderComponent from "@/providers/QueryClientProviderComponent";
+import ReduxToolkitProvider from "@/providers/redux-toolkit-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,18 +17,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryClientProviderComponent>
-      <html lang="en">
-        <body>
-          <div className="min-h-screen flex flex-col justify-between">
-            <div>
-              <Header />
-              {children}
+    <ReduxToolkitProvider>
+      <QueryClientProviderComponent>
+        <html lang="en">
+          <body>
+            <div className="min-h-screen flex flex-col justify-between">
+              <div>
+                <Header />
+                {children}
+              </div>
+              <Footer />
             </div>
-            <Footer />
-          </div>
-        </body>
-      </html>
-    </QueryClientProviderComponent>
+          </body>
+        </html>
+      </QueryClientProviderComponent>
+    </ReduxToolkitProvider>
   );
 }

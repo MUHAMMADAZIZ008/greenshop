@@ -7,6 +7,8 @@ import Image from "next/image";
 import { ProductT } from "@/common/interface";
 import ProductLoading from "@/components/ui/product-loading";
 import productImg from "@/assets/png/product-img2.png";
+import Button from "@/components/ui/button";
+import LikeIcon from "@/assets/components/like-icon";
 
 const ProductDetail = () => {
   const params = useParams();
@@ -105,10 +107,10 @@ const ProductDetail = () => {
               <p className="font-semibold text-[#3d3d3d] text-[15px] mb-[10px]">
                 Size:
               </p>
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2.5 mb-[23px]">
                 {product?.size.map((item, index) => (
                   <button
-                    onClick={()=> setSize(item)}
+                    onClick={() => setSize(item)}
                     key={index}
                     className={`w-[30px] flex items-center justify-center border-2 text-[14px] h-[30px] rounded-full ${
                       size === item
@@ -119,6 +121,48 @@ const ProductDetail = () => {
                     {item}
                   </button>
                 ))}
+              </div>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-[23px]">
+                  <button className="w-[33px] h-[38px] rounded-full flex items-center justify-center bg-[#46A358] text-white text-[28px]">
+                    -
+                  </button>
+                  <p>1</p>
+                  <button className="w-[33px] h-[38px] rounded-full flex items-center justify-center bg-[#46A358] text-white text-[28px]">
+                    +
+                  </button>
+                </div>
+                <div className="flex items-center gap-[10px]">
+                  <Button
+                    variant="primary"
+                    classes="px-[32px] py-[11px] uppercase font-bold"
+                  >
+                    BUY NOW
+                  </Button>
+                  <Button
+                    variant="outline"
+                    classes="px-[20px] py-[11px] uppercase font-bold"
+                  >
+                    Add to cart
+                  </Button>
+                  <Button
+                    variant="outline"
+                    classes="px-[0px] py-[11px] uppercase font-bold"
+                  >
+                    <LikeIcon />
+                  </Button>
+                </div>
+              </div>
+              <div>
+                <p className="flex items-center text-[#a5a5a5] mb-[10px]">
+                  SKU<span className="text-[#727272]">:  1995751877966</span>
+                </p>
+                <p className="flex items-center text-[#a5a5a5] mb-[10px]">
+                  Categories <span className="text-[#727272]">:  {product?.category.name}</span>
+                </p>
+                <p className="flex items-center text-[#a5a5a5] mb-[10px]">
+                  Tags <span className="text-[#727272]">:  {product?.category.tags.map((item, index) => product.category.tags.length - 1 !== index ? (String(item) + ','): (String(item)))}</span>
+                </p>
               </div>
             </div>
           </div>
