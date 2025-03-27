@@ -9,46 +9,95 @@ import ProductLoading from "@/components/ui/product-loading";
 import productImg from "@/assets/png/product-img2.png";
 import Button from "@/components/ui/button";
 import LikeIcon from "@/assets/components/like-icon";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import {
+  addToCart,
+  removeCart,
+  productIncrement,
+  productDecrement,
+  CartProduct,
+  updateProduct,
+} from "@/store/slice/product-cart";
+import RelatedProducts from "../_components/related-products";
 
 const ProductDetail = () => {
+  const { products } = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
   const [orderCount, setOrderCount] = useState<number>(1);
   const params = useParams();
   const [id, categoryId] = Array.isArray(params?.prams)
     ? params.prams
     : ["defaultId", "defaultCategory"];
 
-  const { data, isLoading, error } = useGetProduct(id, categoryId);
-
+  const { data, isLoading } = useGetProduct(id, categoryId);
   const [product, setProduct] = useState<ProductT>();
+  const [isCart, setIsCart] = useState<CartProduct | undefined>();
 
   useEffect(() => {
-    setProduct(data?.data);
-    if (data?.data && data?.data?.quantity > 2) {
-      setOrderCount(1);
-    } else {
-      setOrderCount(0);
+    if (data?.data) {
+      setProduct(data.data);
+      setOrderCount(data.data.quantity > 2 ? 1 : 0);
+      setSize(data.data.size?.[0] || "");
     }
   }, [data]);
 
   const pathName = usePathname().split("/")[1];
 
-  //selection
+  // Mahsulot hajmini tanlash
   const [size, setSize] = useState<string>();
 
-  //  counter
-  const addCount = () => {
-    if (product?.quantity && product?.quantity >= orderCount) {
-      setOrderCount(orderCount + 1);
+  //size fn
+  const changeSizeFn = (size: string) => {
+    setSize(size);
+    if (isCart && product) {
+      dispatch(updateProduct({ _id: product._id, order_size: size }));
     }
   };
+
+  useEffect(() => {
+    const currentProduct = products.find((item) => item._id === product?._id);
+    if (currentProduct) {
+      setSize(currentProduct.order_size);
+      setOrderCount(currentProduct.order_quantity);
+      setIsCart(currentProduct);
+    }
+  }, [products, product]);
+
+  // Counter funksiyalari
+  const addCount = () => {
+    if (product?.quantity && orderCount < product.quantity) {
+      setOrderCount((prev) => prev + 1);
+      if (isCart && product) dispatch(productIncrement({ id: product._id }));
+    }
+  };
+
   const minusCount = () => {
     if (orderCount > 1) {
-      setOrderCount(orderCount - 1);
+      setOrderCount((prev) => prev - 1);
+      if (isCart && product) dispatch(productDecrement({ id: product._id }));
+    }
+  };
+
+  // Savatchaga qo'shish yoki olib tashlash
+  const addToCartFn = () => {
+    if (!isCart && product) {
+      const newCartItem = {
+        ...product,
+        order_quantity: orderCount,
+        order_size: size!,
+        total_price: product.price * orderCount,
+      };
+      dispatch(addToCart(newCartItem));
+      setIsCart(newCartItem);
+    } else if (isCart && product) {
+      dispatch(removeCart({ id: product._id }));
+      setIsCart(undefined);
     }
   };
   return (
-    <section className="pt-[36px] pb-[92px]">
-      <div className="container">
+    <section className="pt-[36px]">
+      <div className="container pb-[92px]">
         <div className="mb-[43px]">
           <ShowPath paths={pathName} />
         </div>
@@ -127,7 +176,7 @@ const ProductDetail = () => {
               <div className="flex items-center gap-2.5 mb-[23px]">
                 {product?.size.map((item, index) => (
                   <button
-                    onClick={() => setSize(item)}
+                    onClick={() => changeSizeFn(item)}
                     key={index}
                     className={`w-[30px] flex items-center justify-center border-2 text-[14px] h-[30px] rounded-full ${
                       size === item
@@ -163,7 +212,8 @@ const ProductDetail = () => {
                     BUY NOW
                   </Button>
                   <Button
-                    variant="outline"
+                    clickFn={addToCartFn}
+                    variant={isCart ? "primary" : "outline"}
                     classes="px-[20px] py-[11px] uppercase font-bold"
                   >
                     Add to cart
@@ -202,6 +252,10 @@ const ProductDetail = () => {
           </div>
         )}
       </div>
+      <RelatedProducts
+        id={product?._id || ""}
+        categoryId={product?.category._id || ""}
+      />
     </section>
   );
 };

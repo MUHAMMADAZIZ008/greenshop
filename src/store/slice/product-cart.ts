@@ -31,13 +31,13 @@ export const cartSlice = createSlice({
       const currentProduct = state.products.find(
         (item) => item._id === action.payload._id
       );
-      if (currentProduct) {
+      if (!currentProduct) {
         return {
           ...state,
           products: [...state.products, action.payload],
-          sub_total: state.sub_total + currentProduct.price,
-          coupon_discount: (state.products.length + 1) * 15000,
-          total: state.shipping + state.sub_total,
+          sub_total: state.sub_total + action.payload.total_price,
+          shipping: (state.products.length + 1) * 15000,
+          total: state.shipping + (state.products.length + 1) * 15000,
         };
       }
       return state;
@@ -46,7 +46,15 @@ export const cartSlice = createSlice({
       const newProducts = state.products.filter(
         (item) => item._id !== action.payload.id
       );
-      return { ...state, products: newProducts };
+      return {
+        ...state,
+        products: newProducts,
+        sub_total: newProducts.reduce((acc, item) => acc + item.total_price, 0),
+        shipping: newProducts.length * 15000,
+        total:
+          newProducts.length * 15000 +
+          newProducts.reduce((acc, item) => acc + item.total_price, 0),
+      };
     },
     productIncrement: (
       state,
@@ -86,9 +94,28 @@ export const cartSlice = createSlice({
       }
       return state;
     },
+    updateProduct: (
+      state,
+      action: { type: string; payload: Partial<CartProduct> }
+    ) => {
+      const currentProduct = state.products.find(
+        (item) => item._id === action.payload._id
+      );
+      if (currentProduct) {
+        const newProducts = state.products.map((item) => {
+          if (currentProduct._id === item._id) {
+            return { ...item, ...action.payload };
+          } else {
+            return item;
+          }
+        });
+        return { ...state, products: newProducts };
+      }
+      return state;
+    },
   },
 });
 
 export default cartSlice.reducer;
-export const { addToCart, removeCart, productIncrement, productDecrement } =
+export const { addToCart, removeCart, productIncrement, productDecrement, updateProduct } =
   cartSlice.actions;

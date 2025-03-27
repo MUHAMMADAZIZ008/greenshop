@@ -12,7 +12,7 @@ const Button = ({
   clickFn?: () => void
 }) => {
   const v = {
-    primary: "bg-[#46a358] text-white font-medium",
+    primary: "bg-[#46a358] text-white font-medium border-2 border-[#46a358]",
     outline: "bg-[#fff] text-[#46a358] border-2 border-[#46a358] font-medium",
   };
   return (

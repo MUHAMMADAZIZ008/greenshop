@@ -42,13 +42,7 @@ const Categories = () => {
               data?.data?.map((item) => (
                 <ProductCard
                   key={item._id}
-                  id={item._id}
-                  category_id={item.category._id}
-                  img={item.images[0]}
-                  name={item.name}
-                  price={item.price}
-                  discount={item.discount}
-                  discount_price={item.discount_price}
+                  item={item}
                 />
               ))
             )}
