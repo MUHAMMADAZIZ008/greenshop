@@ -2,17 +2,18 @@ import { ProductResponse } from "@/common/interface";
 import fetchWrapper from "@/service/fetcher";
 import { useQuery } from "@tanstack/react-query";
 
-const oneProductByFetch = async (id: string, categoryId: string) => {
+const oneProductByFetch = async (categoryId: string) => {
   const data = await fetchWrapper<ProductResponse>(
-    `/products/related${id}?categoryId=${categoryId}&page=1&limit=15}`
+    `/products?categoryId=${categoryId}&page=1&limit=15}`
   );
+
   return data;
 };
 
-const useGetRelatedProduct = (id: string, categoryId: string) => {
+const useGetRelatedProduct = (categoryId: string) => {
   return useQuery({
-    queryKey: ["product", id],
-    queryFn: () => oneProductByFetch(id, categoryId),
+    queryKey: ["product_related", categoryId],
+    queryFn: () => oneProductByFetch(categoryId),
   });
 };
 

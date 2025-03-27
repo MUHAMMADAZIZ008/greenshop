@@ -30,7 +30,8 @@ const ProductDetail = () => {
     ? params.prams
     : ["defaultId", "defaultCategory"];
 
-  const { data, isLoading } = useGetProduct(id, categoryId);
+  const { data, isLoading, error } = useGetProduct(id, categoryId);
+
   const [product, setProduct] = useState<ProductT>();
   const [isCart, setIsCart] = useState<CartProduct | undefined>();
 
