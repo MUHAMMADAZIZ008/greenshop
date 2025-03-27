@@ -11,6 +11,7 @@ import Button from "@/components/ui/button";
 import LikeIcon from "@/assets/components/like-icon";
 
 const ProductDetail = () => {
+  const [orderCount, setOrderCount] = useState<number>(1);
   const params = useParams();
   const [id, categoryId] = Array.isArray(params?.prams)
     ? params.prams
@@ -22,6 +23,11 @@ const ProductDetail = () => {
 
   useEffect(() => {
     setProduct(data?.data);
+    if (data?.data && data?.data?.quantity > 2) {
+      setOrderCount(1);
+    } else {
+      setOrderCount(0);
+    }
   }, [data]);
 
   const pathName = usePathname().split("/")[1];
@@ -29,6 +35,17 @@ const ProductDetail = () => {
   //selection
   const [size, setSize] = useState<string>();
 
+  //  counter
+  const addCount = () => {
+    if (product?.quantity && product?.quantity >= orderCount) {
+      setOrderCount(orderCount + 1);
+    }
+  };
+  const minusCount = () => {
+    if (orderCount > 1) {
+      setOrderCount(orderCount - 1);
+    }
+  };
   return (
     <section className="pt-[36px] pb-[92px]">
       <div className="container">
@@ -124,11 +141,17 @@ const ProductDetail = () => {
               </div>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-[23px]">
-                  <button className="w-[33px] h-[38px] rounded-full flex items-center justify-center bg-[#46A358] text-white text-[28px]">
+                  <button
+                    onClick={minusCount}
+                    className="w-[33px] h-[38px] rounded-full flex items-center justify-center bg-[#46A358] text-white text-[28px]"
+                  >
                     -
                   </button>
-                  <p>1</p>
-                  <button className="w-[33px] h-[38px] rounded-full flex items-center justify-center bg-[#46A358] text-white text-[28px]">
+                  <p>{orderCount}</p>
+                  <button
+                    onClick={addCount}
+                    className="w-[33px] h-[38px] rounded-full flex items-center justify-center bg-[#46A358] text-white text-[28px]"
+                  >
                     +
                   </button>
                 </div>
@@ -155,13 +178,24 @@ const ProductDetail = () => {
               </div>
               <div>
                 <p className="flex items-center text-[#a5a5a5] mb-[10px]">
-                  SKU<span className="text-[#727272]">:  1995751877966</span>
+                  SKU<span className="text-[#727272]">: 1995751877966</span>
                 </p>
                 <p className="flex items-center text-[#a5a5a5] mb-[10px]">
-                  Categories <span className="text-[#727272]">:  {product?.category.name}</span>
+                  Categories{" "}
+                  <span className="text-[#727272]">
+                    : {product?.category.name}
+                  </span>
                 </p>
                 <p className="flex items-center text-[#a5a5a5] mb-[10px]">
-                  Tags <span className="text-[#727272]">:  {product?.category.tags.map((item, index) => product.category.tags.length - 1 !== index ? (String(item) + ','): (String(item)))}</span>
+                  Tags{" "}
+                  <span className="text-[#727272]">
+                    :{" "}
+                    {product?.category.tags.map((item, index) =>
+                      product.category.tags.length - 1 !== index
+                        ? String(item) + ","
+                        : String(item)
+                    )}
+                  </span>
                 </p>
               </div>
             </div>

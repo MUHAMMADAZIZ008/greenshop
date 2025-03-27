@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface CartProduct extends ProductT {
   total_price: number;
   order_quantity: number;
+  order_size: string;
 }
 
 export interface CounterState {
@@ -87,3 +88,7 @@ export const cartSlice = createSlice({
     },
   },
 });
+
+export default cartSlice.reducer;
+export const { addToCart, removeCart, productIncrement, productDecrement } =
+  cartSlice.actions;
