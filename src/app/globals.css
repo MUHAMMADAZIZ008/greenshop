@@ -165,3 +165,8 @@ button {
 .swiper__related .swiper-pagination-bullet-active {
   background-color: #46a358;
 }
+.no__data_box {
+  background-image: url('../assets/png/no-data.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}

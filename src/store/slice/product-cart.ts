@@ -36,8 +36,8 @@ export const cartSlice = createSlice({
           ...state,
           products: [...state.products, action.payload],
           sub_total: state.sub_total + action.payload.total_price,
-          shipping: (state.products.length + 1) * 15000,
-          total: state.shipping + (state.products.length + 1) * 15000,
+          shipping: (state.products.length + 1) * 5,
+          total:  state.sub_total + action.payload.total_price + (state.products.length + 1) * 5,
         };
       }
       return state;
@@ -50,9 +50,9 @@ export const cartSlice = createSlice({
         ...state,
         products: newProducts,
         sub_total: newProducts.reduce((acc, item) => acc + item.total_price, 0),
-        shipping: newProducts.length * 15000,
+        shipping: newProducts.length * 5,
         total:
-          newProducts.length * 15000 +
+          newProducts.length * 5 +
           newProducts.reduce((acc, item) => acc + item.total_price, 0),
       };
     },
@@ -117,5 +117,10 @@ export const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
-export const { addToCart, removeCart, productIncrement, productDecrement, updateProduct } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeCart,
+  productIncrement,
+  productDecrement,
+  updateProduct,
+} = cartSlice.actions;

@@ -4,12 +4,12 @@ const Button = ({
   children,
   variant,
   classes,
-  clickFn
+  clickFn,
 }: {
   children: React.ReactNode;
   variant: "primary" | "outline";
   classes?: string;
-  clickFn?: () => void
+  clickFn?: () => void;
 }) => {
   const v = {
     primary: "bg-[#46a358] text-white font-medium border-2 border-[#46a358]",
@@ -17,7 +17,7 @@ const Button = ({
   };
   return (
     <button
-    onClick={clickFn}
+      onClick={clickFn}
       className={`py-[7px] px-[17px] rounded-[6px] flex items-center gap-1 ${v[variant]} ${classes}`}
     >
       {children}

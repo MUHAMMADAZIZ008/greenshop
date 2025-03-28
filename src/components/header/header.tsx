@@ -10,13 +10,19 @@ import loginIcon from "@/assets/png/login.png";
 import Button from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const { products } = useSelector((state: RootState) => state.cart);
-  const [productCount, setProductCount] = useState(0)
+  const [productCount, setProductCount] = useState(0);
+  const router = useRouter();
+
   useEffect(() => {
-    setProductCount(products.length)
-  }, [products])
+    setProductCount(products.length);
+  }, [products]);
+  const navigateToCart = () => {
+    router.push("/shopping-cart");
+  };
   return (
     <header className="pt-[26px]">
       <div className="container pb-[17px] border-b border-[#46a359b0] flex items-center justify-between">
@@ -33,7 +39,7 @@ const Header = () => {
               alt="search icon"
             />
           </button>
-          <button className="relative">
+          <button className="relative" onClick={navigateToCart}>
             <p className="absolute translate-x-[40%] stroke-[2px] stroke-white right-0 w-[14px] h-[14px] flex items-center justify-center rounded-full bg-[#46A358] text-[11px] font-medium text-white">
               {productCount}
             </p>
